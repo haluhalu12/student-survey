@@ -123,7 +123,12 @@ button, a, label, select, input { touch-action: manipulation; }
 }
 .lang-label { font-size: 14px; font-weight: 600; margin-bottom: -8px; }
 .lang-pick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-@media (min-width: 560px) { .lang-pick { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 560px) { .lang-pick { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+/* 미얀마 문자는 위아래로 길어 글꼴과 줄 간격을 따로 지정 */
+:lang(my) body, :lang(my) .lang-pick button[data-lang="my"], .lang-pick button[data-lang="my"], option[value="my"] { font-family: "Noto Sans Myanmar", var(--font); }
+:lang(my) body { line-height: 1.8; }
+:lang(my) .q-title, :lang(my) h1 { line-height: 1.6; }
+:lang(my) .opt span { line-height: 1.7; padding-top: 10px; padding-bottom: 10px; }
 .lang-pick button {
   min-height: 52px; padding: 12px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface);
   cursor: pointer; font-weight: 600; transition: border-color .15s, background-color .15s, box-shadow .15s;
