@@ -27,7 +27,7 @@
     document.documentElement.lang = lang === "zh" ? "zh-CN" : lang;
     document.title = ui("title");
     $("#brandTitle").textContent = ui("eyebrow");
-    document.querySelectorAll("[data-ui]").forEach(el => { el.textContent = ui(el.dataset.ui); });
+    document.querySelectorAll("[data-ui]").forEach(el => { el.textContent = ui(el.dataset.ui, { n: allQ.length }); });
     $("#langSelect").value = lang;
     $("#langPick").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
   }

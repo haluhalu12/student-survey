@@ -66,6 +66,7 @@
   function render() {
     renderKpis();
     $("#emptyState").hidden = rows.length > 0;
+    renderOpportunity();
     renderCharts();
     renderQuotes();
     renderRecent();
@@ -192,10 +193,45 @@
     });
   }
 
+  // 가장 큰 문제(pain_top)별 기회 지표: 빈도 × 심각도 × 기존 지출 × 지불 의향 × 베타 의향
+  function renderOpportunity() {
+    const q = qById.pain_top;
+    const table = $("#opportunity");
+    if (!q || !table) return;
+    const pct = (n, d) => d ? Math.round(n / d * 100) + "%" : "–";
+    const groups = {};
+    rows.forEach(r => { if (r.pain_top) (groups[r.pain_top] = groups[r.pain_top] || []).push(r); });
+    const total = Object.values(groups).reduce((s, g) => s + g.length, 0);
+    const stats = Object.entries(groups).map(([code, g]) => {
+      const sev = g.map(r => Number(r.pain_severity)).filter(v => v >= 1 && v <= 5);
+      return {
+        label: labelOf(q, code),
+        n: g.length,
+        share: pct(g.length, total),
+        severity: sev.length ? (sev.reduce((a, b) => a + b, 0) / sev.length).toFixed(1) : "–",
+        frequent: pct(g.filter(r => ["daily", "weekly"].includes(r.pain_freq)).length, g.length),
+        paid: pct(g.filter(r => r.spent && String(r.spent) !== "0").length, g.length),
+        wtp: pct(g.filter(r => ["30_50k", "50_100k", "100kp"].includes(r.pay)).length, g.length),
+        beta: pct(g.filter(r => ["yes", "probably"].includes(r.beta)).length, g.length)
+      };
+    }).sort((a, b) => b.n - a.n);
+    const cols = [
+      ["가장 큰 문제", s => s.label], ["응답", s => s.n], ["비중", s => s.share],
+      ["심각도 평균 (/5)", s => s.severity], ["매일·매주 겪음", s => s.frequent],
+      ["이미 돈을 씀", s => s.paid], ["3만 원+ 지불 의향", s => s.wtp], ["베타 사용 의향", s => s.beta]
+    ];
+    table.innerHTML = `<thead><tr>${cols.map(c => `<th>${c[0]}</th>`).join("")}</tr></thead><tbody>` +
+      (stats.length ? stats.map(s => `<tr>${cols.map(c => `<td>${esc(c[1](s))}</td>`).join("")}</tr>`).join("")
+        : `<tr><td colspan="${cols.length}" style="text-align:center;color:var(--muted)">응답 없음</td></tr>`) + `</tbody>`;
+  }
+
   function renderQuotes() {
     const items = [];
+    const textQs = allQ.filter(q => q.type === "text");
     rows.slice().reverse().forEach(r => {
-      if (r.story) items.push({ text: r.story, meta: `${labelOf(qById.country, r.country)} · ${labelOf(qById.degree, r.degree)} · ${fmtTime(r.timestamp)}` });
+      textQs.forEach(q => {
+        if (r[q.id]) items.push({ text: r[q.id], meta: `${ko(q.label).slice(0, 24)}… · ${labelOf(qById.country, r.country)} · ${labelOf(qById.degree, r.degree)} · ${fmtTime(r.timestamp)}` });
+      });
       allQ.forEach(q => {
         const o = r[q.id + "_other"];
         if (o) items.push({ text: o, meta: `기타 입력 — ${ko(q.label)} · ${fmtTime(r.timestamp)}` });
@@ -214,9 +250,10 @@
       ["국적", r => labelOf(qById.country, r.country)],
       ["과정", r => labelOf(qById.degree, r.degree)],
       ["지역", r => labelOf(qById.region, r.region)],
-      ["주거", r => labelOf(qById.housing, r.housing)],
-      ["만족도", r => r.satisfaction || ""],
-      ["지불 의향", r => labelOf(qById.pay, r.pay)],
+      ["가장 큰 문제", r => r.pain_top ? labelOf(qById.pain_top, r.pain_top) : ""],
+      ["심각도", r => r.pain_severity || ""],
+      ["지불 의향", r => r.pay ? labelOf(qById.pay, r.pay) : ""],
+      ["베타", r => r.beta ? labelOf(qById.beta, r.beta) : ""],
       ["인터뷰", r => r.consent === "yes" && r.email ? "동의" : ""]
     ];
     const recent = rows.slice(-20).reverse();
