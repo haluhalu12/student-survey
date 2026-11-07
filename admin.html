@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>유학생 설문 결과</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><span class="brand-mark">KR</span><span>설문 결과 대시보드</span></div>
+      <div class="toolbar">
+        <span class="pill" id="statusPill">연결 중</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="keyView" class="keybox" hidden>
+      <h1 style="font-size:22px">관리자 키 입력</h1>
+      <p style="margin:0;color:var(--muted);font-size:14px">Apps Script에 설정한 ADMIN_KEY를 입력하세요. 이 브라우저에만 저장됩니다.</p>
+      <input class="field" id="keyInput" type="password" autocomplete="current-password" placeholder="ADMIN_KEY">
+      <div class="msg err" id="keyMsg" hidden></div>
+      <button class="btn" id="keyBtn" type="button">결과 보기</button>
+    </section>
+
+    <section id="dash" hidden>
+      <div class="admin-head">
+        <div>
+          <h1>외국인 유학생 사전 조사</h1>
+          <p id="headNote"></p>
+        </div>
+        <div class="toolbar">
+          <span class="updated" id="updated"></span>
+          <button class="btn sm ghost" id="refreshBtn" type="button">새로고침</button>
+          <button class="btn sm" id="csvBtn" type="button">CSV 내보내기</button>
+          <button class="btn sm ghost" id="clearBtn" type="button" hidden>데모 데이터 지우기</button>
+        </div>
+      </div>
+      <div class="msg err" id="dashMsg" role="alert" hidden></div>
+
+      <div class="kpis">
+        <div class="kpi"><div class="k">총 응답</div><div class="v" id="kTotal">0</div><div class="s" id="kTotalS">&nbsp;</div></div>
+        <div class="kpi"><div class="k">오늘 응답</div><div class="v" id="kToday">0</div><div class="s" id="kTodayS">&nbsp;</div></div>
+        <div class="kpi"><div class="k">모바일 응답 비율</div><div class="v" id="kMobile">–</div><div class="s" id="kMobileS">&nbsp;</div></div>
+        <div class="kpi"><div class="k">인터뷰 동의</div><div class="v" id="kConsent">0</div><div class="s">이메일을 남긴 응답자</div></div>
+      </div>
+
+      <div class="empty card" id="emptyState" hidden>
+        <b>아직 응답이 없어요</b>
+        설문 링크(index.html)를 학생들에게 공유하면 응답이 들어오는 대로 여기에 표시됩니다.
+      </div>
+
+      <div id="charts"></div>
+
+      <div class="section-label">자유 의견</div>
+      <div class="card"><div class="quotes" id="quotes"></div></div>
+
+      <div class="section-label">최근 응답 20건</div>
+      <div class="card"><div class="table-wrap"><table id="recent"></table></div></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/questions.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

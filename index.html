@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>International Student Survey</title>
+  <meta name="description" content="A short survey about life in Korea for international university students.">
+  <meta name="theme-color" content="#2b59c3">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><span class="brand-mark">KR</span><span id="brandTitle">Student Survey</span></div>
+      <select id="langSelect" class="lang-select" aria-label="Language"></select>
+    </div>
+  </header>
+  <div class="progress" id="progressBar" hidden><i></i></div>
+
+  <main class="wrap">
+    <section id="intro" class="intro">
+      <div class="eyebrow" data-ui="eyebrow"></div>
+      <h1 data-ui="title"></h1>
+      <p data-ui="intro"></p>
+      <ul class="facts">
+        <li data-ui="time"></li>
+        <li data-ui="count"></li>
+        <li data-ui="anon"></li>
+      </ul>
+      <div class="lang-pick" id="langPick"></div>
+      <div class="demo-note" id="demoNote" data-ui="demo" hidden></div>
+      <div><button class="btn" id="startBtn" type="button" data-ui="start"></button></div>
+    </section>
+
+    <form id="survey" novalidate hidden>
+      <div id="questions"></div>
+      <div class="hp" aria-hidden="true">
+        <label for="website">Website</label>
+        <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="submit-area">
+        <div class="msg err" id="formMsg" role="alert" hidden></div>
+        <button class="btn block" id="submitBtn" type="submit" data-ui="submit"></button>
+        <div class="updated" id="progressText" style="text-align:center"></div>
+      </div>
+    </form>
+
+    <section id="done" class="done" hidden>
+      <div class="stamp" aria-hidden="true">✓</div>
+      <h1 data-ui="thanks"></h1>
+      <p data-ui="thanksBody"></p>
+      <button class="btn ghost" id="againBtn" type="button" data-ui="again"></button>
+    </section>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/questions.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/survey.js"></script>
+</body>
+</html>
