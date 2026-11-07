@@ -226,6 +226,10 @@ textarea.field { min-height: 160px; resize: vertical; line-height: 1.5; }
 .msg.err { background: var(--danger-soft); color: var(--danger); font-weight: 500; }
 .field-err { font-size: 14px; color: var(--danger); font-weight: 500; }
 
+/* ---------- autumn leaves background (js/leaves.js) ---------- */
+.leaves-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.survey-page .wrap { position: relative; z-index: 1; }
+
 /* ---------- section complete chip (motion) ---------- */
 .sec-toast {
   position: fixed; left: 50%; top: calc(var(--bar-h) + 14px + env(safe-area-inset-top, 0px)); z-index: 30;

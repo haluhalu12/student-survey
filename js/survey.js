@@ -303,6 +303,7 @@
   /* ---------- views ---------- */
   function setChrome(mode) {
     const inSurvey = mode === "survey";
+    if (window.Leaves) window.Leaves.setMode(mode); // 낙엽: 문항 화면에서는 적고 흐리게
     $("#brand").hidden = inSurvey;
     $("#backBtn").hidden = !inSurvey;
     $("#stepCount").hidden = !inSurvey;
