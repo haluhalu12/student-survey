@@ -59,7 +59,7 @@
 ## 6. 개발 단계
 1. ✅ 기획서 (이 문서)
 2. ✅ 설문 페이지 + 대시보드 + Apps Script 코드
-3. ⬜ Google Sheets 연결 (README 참고, 약 10분)
-4. ⬜ GitHub Pages 배포 → 설문 링크/QR 배포
+3. ✅ Google Sheets 연결 (README 참고, 약 10분)
+4. ✅ GitHub Pages 배포 — https://haluhalu12.github.io/student-survey/ (QR 배포는 문항 확정 후)
 5. ⬜ 문항 확정 (Gemini 사전 조사 내용 반영)
 6. ⬜ (선택) PWA로 홈 화면 설치 지원
