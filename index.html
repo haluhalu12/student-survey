@@ -5,22 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>International Student Survey</title>
   <meta name="description" content="A short survey about life in Korea for international university students.">
-  <meta name="theme-color" content="#2b59c3">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161616" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="survey-page">
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand"><span class="brand-mark">KR</span><span id="brandTitle">Student Survey</span></div>
-      <select id="langSelect" class="lang-select" aria-label="Language"></select>
+      <div class="brand" id="brand"><span class="brand-mark" aria-hidden="true">KR</span><span id="brandTitle" translate="no">Student Survey</span></div>
+      <button class="icon-btn" id="backBtn" type="button" hidden>
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="step-count" id="stepCount" aria-live="polite" hidden></div>
+      <select id="langSelect" class="lang-select" aria-label="Language" translate="no"></select>
     </div>
   </header>
-  <div class="progress" id="progressBar" hidden><i></i></div>
+  <div class="progress" id="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden><i></i></div>
 
-  <main class="wrap">
+  <main class="wrap" id="main">
+    <!-- 소개 -->
     <section id="intro" class="intro">
       <div class="eyebrow" data-ui="eyebrow"></div>
       <h1 data-ui="title"></h1>
@@ -30,31 +38,50 @@
         <li data-ui="count"></li>
         <li data-ui="anon"></li>
       </ul>
-      <div class="lang-pick" id="langPick"></div>
+      <div class="lang-label" data-ui="chooseLang"></div>
+      <div class="lang-pick" id="langPick" translate="no"></div>
       <div class="demo-note" id="demoNote" data-ui="demo" hidden></div>
-      <div><button class="btn" id="startBtn" type="button" data-ui="start"></button></div>
+      <div class="resume" id="resumeBox" hidden>
+        <b id="resumeText"></b>
+        <div class="row">
+          <button class="btn" id="resumeBtn" type="button" data-ui="resume"></button>
+          <button class="btn ghost" id="restartBtn" type="button" data-ui="restart"></button>
+        </div>
+      </div>
+      <div class="intro-actions" id="startRow"><button class="btn" id="startBtn" type="button" data-ui="start"></button></div>
     </section>
 
+    <!-- 설문: 한 화면에 한 문항 -->
     <form id="survey" novalidate hidden>
-      <div id="questions"></div>
+      <div id="stepHost"></div>
       <div class="hp" aria-hidden="true">
         <label for="website">Website</label>
         <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
       </div>
-      <div class="submit-area">
-        <div class="msg err" id="formMsg" role="alert" hidden></div>
-        <button class="btn block" id="submitBtn" type="submit" data-ui="submit"></button>
-        <div class="updated" id="progressText" style="text-align:center"></div>
-      </div>
     </form>
 
+    <!-- 완료 -->
     <section id="done" class="done" hidden>
-      <div class="stamp" aria-hidden="true">✓</div>
-      <h1 data-ui="thanks"></h1>
+      <div class="stamp" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M6 12.5l4 4L18 8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h1 data-ui="thanks" tabindex="-1" id="doneTitle"></h1>
       <p data-ui="thanksBody"></p>
-      <button class="btn ghost" id="againBtn" type="button" data-ui="again"></button>
+      <div class="row">
+        <button class="btn" id="shareBtn" type="button" data-ui="share"></button>
+        <button class="btn ghost" id="againBtn" type="button" data-ui="again"></button>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
     </section>
   </main>
+
+  <!-- 하단 고정 버튼 -->
+  <div class="actionbar" id="actionbar" hidden>
+    <div class="actionbar-inner">
+      <div class="msg err" id="formMsg" role="alert" hidden></div>
+      <button class="btn block" id="nextBtn" type="button"></button>
+    </div>
+  </div>
 
   <script src="js/config.js"></script>
   <script src="js/questions.js"></script>

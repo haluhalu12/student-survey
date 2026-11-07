@@ -23,11 +23,10 @@
     return op ? ko(op.label) : String(code);
   }
   function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  const timeFmt = new Intl.DateTimeFormat("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false });
   function fmtTime(iso) {
     const d = new Date(iso);
-    if (isNaN(d)) return String(iso || "");
-    const p = (n) => String(n).padStart(2, "0");
-    return `${d.getMonth() + 1}/${d.getDate()} ${p(d.getHours())}:${p(d.getMinutes())}`;
+    return isNaN(d) ? String(iso || "") : timeFmt.format(d);
   }
   function setStatus(kind, text) {
     const pill = $("#statusPill");
@@ -175,7 +174,7 @@
             const meta = c.getDatasetMeta(0);
             g.save();
             g.fillStyle = muted;
-            g.font = "600 11px 'IBM Plex Mono', monospace";
+            g.font = "600 11px 'Pretendard Variable', Pretendard, system-ui, sans-serif";
             meta.data.forEach((bar, i) => {
               const v = c.data.datasets[0].data[i];
               if (!v) return;
