@@ -26,6 +26,7 @@
     </div>
   </header>
   <div class="progress" id="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden><i></i></div>
+  <div class="sec-toast" id="secToast" role="status" aria-live="polite" hidden></div>
 
   <main class="wrap" id="main">
     <!-- 소개 -->
@@ -63,7 +64,7 @@
     <!-- 완료 -->
     <section id="done" class="done" hidden>
       <div class="stamp" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><path d="M6 12.5l4 4L18 8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg viewBox="0 0 24 24"><path pathLength="1" d="M6 12.5l4 4L18 8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <h1 data-ui="thanks" tabindex="-1" id="doneTitle"></h1>
       <p data-ui="thanksBody"></p>
@@ -83,6 +84,10 @@
     </div>
   </div>
 
+  <!-- 모션: Motion(MIT) + canvas-confetti(ISC). 로딩 실패 시 기존 CSS 전환으로 동작 -->
+  <script src="https://cdn.jsdelivr.net/npm/motion@12.38.0/dist/motion.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="js/fx.js"></script>
   <script src="js/config.js"></script>
   <script src="js/questions.js"></script>
   <script src="js/store.js"></script>

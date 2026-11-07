@@ -12,6 +12,9 @@
   const DRAFT_DAYS = 14;
   const AUTO_ADVANCE_MS = 300;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // 모션(js/fx.js) 호출 — 라이브러리가 없거나 실패해도 설문은 그대로 동작
+  const fx = (name, ...args) => { try { if (window.FX && window.FX[name]) window.FX[name](...args); } catch (e) {} };
+  const fxReady = () => !!(window.FX && window.FX.ready);
 
   /* ---------- storage (항상 try/catch: 사생활 보호 모드 등) ---------- */
   const store = {
@@ -154,7 +157,8 @@
     const isChoice = ["single", "multi", "scale"].includes(q.type);
     const head = `<h1 class="q-title" id="qt" tabindex="-1">${esc(t(q.label))}</h1>${hint ? `<div class="q-hint" id="qh">${esc(hint)}</div>` : ""}`;
     const body = renderBody(q);
-    const anim = dir && !reduceMotion ? ` enter${dir === "back" ? " back" : ""}` : "";
+    const useFx = fxReady();
+    const anim = dir && !reduceMotion && !useFx ? ` enter${dir === "back" ? " back" : ""}` : "";
     $("#stepHost").innerHTML = `<div class="step${anim}">
       <div class="step-section">${esc(t(sec.title))} · ${si + 1}/${S.sections.length}</div>
       ${isChoice
@@ -172,6 +176,7 @@
     if (dir) {
       window.scrollTo({ top: 0 });
       $("#qt").focus({ preventScroll: true });
+      if (useFx) fx("stepIn", $("#stepHost").firstElementChild, dir);
     }
   }
 
@@ -208,7 +213,14 @@
     readStep(steps[step].q);
     if (!validate()) return;
     if (step === total - 1) submit();
-    else go(step + 1, "fwd", true);
+    else {
+      const prev = steps[step];
+      go(step + 1, "fwd", true);
+      if (steps[step].si !== prev.si) {
+        fx("sectionDone", $("#secToast"), ui("sectionDone", { s: t(prev.sec.title) }));
+        fx("glow", $("#progressBar"));
+      }
+    }
   }
 
   function back() {
@@ -229,10 +241,13 @@
       box.hidden = !otherOn;
       if (otherOn && e.type === "change" && e.target.name === q.id) box.focus();
     }
+    const was = isAnswered(q);
     readStep(q);
     enforceMax(q);
     if (isAnswered(q)) $("#formMsg").hidden = true;
     saveDraft();
+    if (e.type === "change" && e.target.name === q.id && e.target.checked) fx("press", e.target.nextElementSibling);
+    if (!was && isAnswered(q) && !(q.type === "scale" || (q.type === "single" && !otherOn))) fx("nudge", $("#nextBtn"));
 
     // 단일 선택·척도는 고르면 자동으로 다음 문항
     if (e.type === "change" && e.target.name === q.id && (q.type === "scale" || (q.type === "single" && !otherOn))) {
@@ -303,6 +318,7 @@
     $("#startRow").hidden = !!d;
     applyUi();
     window.scrollTo({ top: 0 });
+    fx("intro", [...$("#intro").children].filter(el => !el.hidden));
   }
   function showSurvey(startStep) {
     view = "survey";
@@ -317,8 +333,11 @@
     $("#intro").hidden = true; $("#survey").hidden = true; $("#done").hidden = false;
     setChrome("done");
     $("#toast").textContent = "";
+    $("#secToast").hidden = true;
     window.scrollTo({ top: 0 });
     $("#doneTitle").focus({ preventScroll: true });
+    fx("celebrate", $("#done .stamp"));
+    fx("intro", [...$("#done").children].filter(el => !el.classList.contains("stamp") && !el.hidden));
   }
 
   async function share() {

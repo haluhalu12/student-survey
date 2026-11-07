@@ -226,6 +226,15 @@ textarea.field { min-height: 160px; resize: vertical; line-height: 1.5; }
 .msg.err { background: var(--danger-soft); color: var(--danger); font-weight: 500; }
 .field-err { font-size: 14px; color: var(--danger); font-weight: 500; }
 
+/* ---------- section complete chip (motion) ---------- */
+.sec-toast {
+  position: fixed; left: 50%; top: calc(var(--bar-h) + 14px + env(safe-area-inset-top, 0px)); z-index: 30;
+  translate: -50% 0; pointer-events: none;
+  padding: 8px 16px; border-radius: 999px; background: var(--ink); color: var(--bg);
+  font-size: 14px; font-weight: 700; box-shadow: var(--shadow); white-space: nowrap;
+}
+.stamp svg path { stroke-dashoffset: 0; }
+
 /* ---------- bottom action bar ---------- */
 .actionbar {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;

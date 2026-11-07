@@ -60,6 +60,7 @@
       sending: L("Sending…", "보내는 중…", "提交中…", "Đang gửi…"),
       missing: L("Choose an answer to continue.", "답을 고르면 다음으로 넘어갈 수 있어요.", "请选择一个答案后继续。", "Hãy chọn một câu trả lời để tiếp tục."),
       next: L("Next", "다음", "下一题", "Tiếp theo"),
+      sectionDone: L("✓ {s} done", "✓ {s} 완료", "✓ {s} 完成", "✓ Xong: {s}"),
       back: L("Previous question", "이전 질문", "上一题", "Câu trước"),
       chooseLang: L("Choose your language", "언어를 선택하세요", "选择语言", "Chọn ngôn ngữ"),
       stepOf: L("{a} / {b}", "{a} / {b}", "{a} / {b}", "{a} / {b}"),

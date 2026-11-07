@@ -77,13 +77,15 @@
     const todayN = rows.filter(r => new Date(r.timestamp).toDateString() === today).length;
     const mobile = rows.filter(r => r.device === "mobile").length;
     const consent = rows.filter(r => r.consent === "yes" && r.email).length;
-    $("#kTotal").textContent = n.toLocaleString("ko-KR");
+    const fmtN = (v) => v.toLocaleString("ko-KR");
+    const setNum = (el, v) => { if (window.FX) window.FX.count(el, v, fmtN); else el.textContent = fmtN(v); };
+    setNum($("#kTotal"), n);
     $("#kTotalS").textContent = n ? "첫 응답 " + fmtTime(rows[0].timestamp) : " ";
-    $("#kToday").textContent = todayN.toLocaleString("ko-KR");
+    setNum($("#kToday"), todayN);
     $("#kTodayS").textContent = new Date().toLocaleDateString("ko-KR", { month: "long", day: "numeric" });
     $("#kMobile").textContent = n ? Math.round(mobile / n * 100) + "%" : "–";
     $("#kMobileS").textContent = n ? `모바일 ${mobile} · PC ${n - mobile}` : " ";
-    $("#kConsent").textContent = consent.toLocaleString("ko-KR");
+    setNum($("#kConsent"), consent);
 
     const byLang = {};
     rows.forEach(r => { byLang[r.lang] = (byLang[r.lang] || 0) + 1; });
